@@ -1,48 +1,116 @@
+<!DOCTYPE html>
 <html>
-  <body>
-    <h3>Names Starting with "B"</h3>
-    <ul id="filtered-list"></ul>
+<head>
+    <title>Monster Selector</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+        }
+
+        #selector {
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .info-box {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #444;
+            width: 300px;
+            border-radius: 5px;
+        }
+
+        .info-row {
+            margin-bottom: 8px;
+        }
+
+        .label {
+            font-weight: bold;
+            width: 70px;
+            display: inline-block;
+        }
+    </style>
 
     <script>
-      
-      const people = [
-        "Alice Anderson",
-        "Aaron Adams",
-        "Bella Brown",
-        "Brian Black",
-        "Cathy Carter",
-        "Charles Cooper",
-        "Diana Davis",
-        "Daniel Drake",
-        "Ella Evans",
-        "Ethan Edwards",
-        "Fiona Fisher",
-        "Frank Foster",
-        "Grace Green",
-        "Gavin Gray",
-        "Hannah Harris",
-        "Henry Hill",
-        "Isabella Ingram",
-        "Ian Irving",
-        "Jack Johnson",
-        "Julia James"
-      ];
+        const monsters = [
+            { name: "Slime", type: "Magic", level: 1, hp: 50 },
+            { name: "Goblin", type: "Beast", level: 5, hp: 120 },
+            { name: "Ogre", type: "Giant", level: 12, hp: 300 },
+            { name: "Dragon", type: "Legendary", level: 50, hp: 2000 }
+        ];
 
-    
-      const firstLetter = "B";
+        function loadOptions() {
+            const selector = document.getElementById("selector");
 
-      
-      const result = people.filter(person => person.charAt(0) === firstLetter);
+            const defaultOpt = document.createElement("option");
+            defaultOpt.value = "-";
+            defaultOpt.innerText = "-";
+            selector.appendChild(defaultOpt);
 
-      
-      const ul = document.getElementById("filtered-list");
+            monsters.forEach(m => {
+                let opt = document.createElement("option");
+                opt.value = m.name;
+                opt.innerText = m.name;
+                selector.appendChild(opt);
+            });
+        }
 
-     
-      result.forEach(name => {
-        const li = document.createElement("li");
-        li.textContent = name;
-        ul.appendChild(li);
-      });
+        function showMonster() {
+            const selected = document.getElementById("selector").value;
+
+            const m_name = document.getElementById("m_name");
+            const m_type = document.getElementById("m_type");
+            const m_level = document.getElementById("m_level");
+            const m_hp = document.getElementById("m_hp");
+
+            if (selected === "-") {
+                m_name.innerText = "";
+                m_type.innerText = "";
+                m_level.innerText = "";
+                m_hp.innerText = "";
+                return;
+            }
+
+            const monster = monsters.find(m => m.name === selected);
+
+            m_name.innerText = monster.name;
+            m_type.innerText = monster.type;
+            m_level.innerText = monster.level;
+            m_hp.innerText = monster.hp;
+        }
     </script>
-  </body>
+
+</head>
+
+<body onload="loadOptions()">
+
+    <h2>Monster Selection</h2>
+
+    <select id="selector" onchange="showMonster()"></select>
+
+    <div class="info-box">
+        <div class="info-row">
+            <span class="label">Name:</span>
+            <span id="m_name"></span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Type:</span>
+            <span id="m_type"></span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">Level:</span>
+            <span id="m_level"></span>
+        </div>
+
+        <div class="info-row">
+            <span class="label">HP:</span>
+            <span id="m_hp"></span>
+        </div>
+    </div>
+
+</body>
 </html>
